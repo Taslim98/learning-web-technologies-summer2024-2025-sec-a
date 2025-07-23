@@ -1,0 +1,44 @@
+ul {
+    list-style-type: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid black;
+    vertical-align: top;
+    padding: 10px;
+}
+
+.header {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    font-size: 14px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#mainbody {
+    height: 500px;
+}
+
+.page {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.sidebar,
+.external-links {
+    width: 200px;
+}
