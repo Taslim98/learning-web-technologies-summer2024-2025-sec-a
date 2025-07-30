@@ -1,0 +1,77 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Date of Birth</title>
+    <style>
+        td {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="return validateDOB()">  
+        <fieldset style="width:180px">
+            <legend>Date of Birth</legend>
+            <table>
+                <tr>
+                    <td>dd</td>
+                    <td>mm</td>
+                    <td>yyyy</td>
+                </tr>
+            </table>
+            <input type="text" size="1" id="day"> /
+            <input type="text" size="1" id="month"> /
+            <input type="text" size="2" id="year">
+            <hr>
+            <input type="submit" value="Submit">
+        </fieldset> 
+    </form>
+
+    <script>
+        function validateDOB() {
+            const day = document.getElementById("day").value.trim();
+            const month = document.getElementById("month").value.trim();
+            const year = document.getElementById("year").value.trim();
+
+            // Rule i: Cannot be empty
+            if (day === "" || month === "" || year === "") {
+                alert("All date fields must be filled.");
+                return false;
+            }
+
+            // Convert to numbers
+            const dayNum = Number(day);
+            const monthNum = Number(month);
+            const yearNum = Number(year);
+
+            // Check if all are valid numbers
+            if (isNaN(dayNum) || isNaN(monthNum) || isNaN(yearNum)) {
+                alert("Day, month, and year must all be valid numbers.");
+                return false;
+            }
+
+            // Rule ii: Check ranges
+            if (dayNum < 1 || dayNum > 31) {
+                alert("Day must be between 1 and 31.");
+                return false;
+            }
+
+            if (monthNum < 1 || monthNum > 12) {
+                alert("Month must be between 1 and 12.");
+                return false;
+            }
+
+            if (yearNum < 1900 || yearNum > 2016) {
+                alert("Year must be between 1900 and 2016.");
+                return false;
+            }
+
+            return true; // Passed all checks
+        }
+    </script>
+</body>
+</html>
+

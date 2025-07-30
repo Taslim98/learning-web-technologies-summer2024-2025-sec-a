@@ -1,0 +1,63 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profile Picture</title>
+    <style>
+        form {
+            width: 350px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="return validateProfile()">
+        <fieldset>
+            <legend>Profile Picture</legend>
+            <table>
+                <tr>
+                    <td><label for="userId">User Id</label></td>
+                    <td><input type="text" id="userId" name="userId"><br></td>
+                </tr>
+                <tr>
+                    <td><label for="picture">Picture</label></td>
+                    <td><input type="file" id="picture" name="picture" accept="image/*"></td>
+                </tr> 
+            </table>
+            <hr>
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+
+    <script>
+        function validateProfile() {
+            const userIdInput = document.getElementById("userId").value.trim();
+            const pictureInput = document.getElementById("picture").files;
+
+            // Rule i: User ID cannot be empty
+            if (userIdInput === "") {
+                alert("User ID cannot be empty.");
+                return false;
+            }
+
+            // Rule i continued: User ID must be a positive number
+            const userIdNumber = Number(userIdInput);
+            
+
+            if (typeof userIdNumber !== 'number' || !Number.isFinite(userIdNumber) || userIdNumber <= 0) {
+                alert("User ID must be a positive number.");
+                return false;
+            }
+
+            // Rule ii: Picture must be selected
+            if (pictureInput.length === 0) {
+                alert("Please select a profile picture.");
+                return false;
+            }
+
+            return true; // All validations passed
+        }
+    </script>
+</body>
+</html>
+

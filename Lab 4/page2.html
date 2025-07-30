@@ -1,0 +1,59 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Email</title>
+</head>
+<body>
+    <form onsubmit="return validateEmail()">       
+        <label for="email">Email</label><br>
+        <input type="email" id="email" name="email">
+        <span title="hint: sample@example.com">ℹ️</span><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateEmail() {
+            const email = document.getElementById("email").value.trim();
+
+            // Rule i: Cannot be empty
+            if (email === "") {
+                alert("Email field cannot be empty.");
+                return false;
+            }
+
+            // Rule ii: Must be a valid email format 
+            const atIndex = email.indexOf("@");
+            const lastAtIndex = email.lastIndexOf("@");
+
+            // Must contain exactly one @
+            if (atIndex === -1 || atIndex !== lastAtIndex) {
+                alert("Email must contain exactly one '@' symbol.");
+                return false;
+            }
+
+            const localPart = email.substring(0, atIndex);
+            const domainPart = email.substring(atIndex + 1);
+
+            // Local and domain parts cannot be empty
+            if (localPart === "" || domainPart === "") {
+                alert("Email must have both a local part and a domain part.");
+                return false;
+            }
+
+            // Domain must contain at least one dot not at the end
+            const dotIndex = domainPart.indexOf(".");
+            if (dotIndex === -1 || dotIndex === 0 || dotIndex === domainPart.length - 1) {
+                alert("Domain part must contain a '.' and it cannot be at the beginning or end.");
+                return false;
+            }
+
+            return true; // All validations passed
+        }
+    </script>
+</body>
+</html>
+
