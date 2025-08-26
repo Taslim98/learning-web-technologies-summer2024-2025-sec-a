@@ -1,0 +1,186 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8fdfd;
+    color: #333;
+}
+
+/* Top Bar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f766e;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+}
+
+.topbar .logo {
+    font-weight: bold;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout-btn {
+    background: #fff;
+    color: #0f766e;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.logout-btn:hover {
+    background: #e6fffa;
+}
+
+/* Layout */
+.sidebar {
+    width: 220px;
+    background: #0f766e;
+    color: #fff;
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    padding: 20px 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 12px;
+}
+
+.sidebar .nav-link {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: #115e56;
+}
+
+main {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+/* Sections */
+.section {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.section.active {
+    display: block;
+}
+
+/* Forms */
+.form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.form-box label {
+    font-weight: bold;
+    color: #0f766e;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+
+.form-box input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 4px;
+}
+
+/* Buttons */
+.btn {
+    background: #0f766e;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn:hover {
+    background: #115e56;
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.table th {
+    background-color: #e6fffa;
+    color: #0f766e;
+}
+
+/* Lists */
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.list li {
+    padding: 10px;
+    background: #f0fdfc;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    color: #0f766e;
+    font-weight: bold;
+}
+
+/* Status Message */
+#profileStatus {
+    margin-top: 10px;
+    color: green;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    main {
+        margin-left: 0;
+    }
+}
