@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hospital Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="Admin_panel.css" rel="stylesheet">
+  <script src="Admin_panel.js" defer></script>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <h1>Hospital Admin Panel</h1>
+      <p class="muted">Operations • People • Inventory • Security</p>
+    </div>
+    <div class="topbar__right">
+      <button id="btnProfile" class="btn ghost small">My Profile</button>
+      <button id="btnLogout" class="btn small">Logout</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar" aria-label="Admin Navigation">
+      <ul class="nav">
+        <li><button class="nav-btn active" data-section="dashboard">🏠 Dashboard</button></li>
+        <li><button class="nav-btn" data-section="inventory">📦 Inventory</button></li>
+        <li><button class="nav-btn" data-section="staff">👥 Staff</button></li>
+        <li><button class="nav-btn" data-section="doctor-registry">🧑‍⚕️ Doctor Registry</button></li>
+        <li><button class="nav-btn" data-section="roles">🔐 Roles & Access</button></li>
+        <li><button class="nav-btn" data-section="profile">👤 Profile</button></li>
+        <li><button class="nav-btn" data-section="errors">⚠️ Error Pages</button></li>
+      </ul>
+    </nav>
+
+    <!-- Content -->
+    <section class="content">
+      <!-- Dashboard -->
+      <div id="dashboard" class="section active">
+        <h2>Overview</h2>
+        <div class="cards">
+          <div class="card">
+            <div class="card__title">Patients</div>
+            <div class="card__value" id="statPatients">—</div>
+          </div>
+          <div class="card">
+            <div class="card__title">Doctors</div>
+            <div class="card__value" id="statDoctors">—</div>
+          </div>
+          <div class="card">
+            <div class="card__title">Appointments Today</div>
+            <div class="card__value" id="statAppointments">—</div>
+          </div>
+          <div class="card">
+            <div class="card__title">Low Stock Items</div>
+            <div class="card__value" id="statLowStock">—</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__header">
+            <h3>Recent Activity</h3>
+          </div>
+          <ul id="activityFeed" class="list">
+            <!-- injected by JS -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Inventory -->
+      <div id="inventory" class="section">
+        <div class="section__header">
+          <h2>Inventory Tracking</h2>
+          <div class="legend">
+            <span class="pill ok">OK</span>
+            <span class="pill warn">Low Stock</span>
+            <span class="pill near">Near Expiry</span>
+            <span class="pill danger">Expired</span>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel__header">
+              <h3>Stock Dashboard</h3>
+              <div class="row">
+                <input id="invSearch" class="input" type="text" placeholder="Search by name or SKU">
+                <button id="btnInvNew" class="btn">Add New Item</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th><th>SKU</th><th>Category</th><th>Supplier</th>
+                    <th>Qty</th><th>UoM</th><th>Batch</th><th>Expiry</th>
+                    <th>Reorder</th><th>Alert</th><th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="invBody"><!-- rows --></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__header">
+              <h3 id="invFormTitle">Add Inventory Item</h3>
+            </div>
+            <form id="invForm" class="form" novalidate>
+              <fieldset class="fieldset">
+                <legend>Item Details</legend>
+                <label>Item Name
+                  <input id="fItemName" class="input" type="text" placeholder="Sterile Gauze Pads (4x4)">
+                </label>
+                <label>SKU / Code
+                  <input id="fSku" class="input" type="text" placeholder="GAUZE-4X4-100">
+                </label>
+                <label>Category
+                  <select id="fCategory" class="input">
+                    <option value="">Select</option>
+                    <option>Gloves</option>
+                    <option>Medication</option>
+                    <option>Syringes & Needles</option>
+                    <option>Dressings</option>
+                    <option>Disposables</option>
+                    <option>Equipment</option>
+                  </select>
+                </label>
+                <label>Supplier
+                  <select id="fSupplier" class="input">
+                    <option value="">Select</option>
+                    <option>MedSupply Inc.</option>
+                    <option>CarePlus Pharma</option>
+                    <option>HealthLine Distributors</option>
+                  </select>
+                </label>
+              </fieldset>
+
+              <fieldset class="fieldset">
+                <legend>Stock & Tracking</legend>
+                <div class="grid-2">
+                  <label>Quantity on Hand
+                    <input id="fQty" class="input" type="number" min="0" step="1" placeholder="150">
+                  </label>
+                  <label>Unit of Measurement
+                    <select id="fUom" class="input">
+                      <option value="">Select</option>
+                      <option>Single Unit</option>
+                      <option>Box (10)</option>
+                      <option>Box (50)</option>
+                      <option>Box (100)</option>
+                      <option>Bottle</option>
+                      <option>Vial</option>
+                    </select>
+                  </label>
+                </div>
+                <label>Batch Number
+                  <input id="fBatch" class="input" type="text" placeholder="BATCH-2025-07">
+                </label>
+                <label>Expiration Date
+                  <input id="fExpiry" class="input" type="date">
+                </label>
+              </fieldset>
+
+              <fieldset class="fieldset">
+                <legend>Alerts Configuration</legend>
+                <label>Reorder Level
+                  <input id="fReorder" class="input" type="number" min="0" step="1" placeholder="50">
+                </label>
+                <small class="hint">
+                  The system triggers a reorder alert when quantity falls to this number.
+                </small>
+              </fieldset>
+
+              <div id="invErrors" class="errors" aria-live="polite"></div>
+
+              <div class="row">
+                <button class="btn" type="submit">Save</button>
+                <button id="btnInvCancel" class="btn ghost" type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Staff -->
+      <div id="staff" class="section">
+        <div class="section__header">
+          <h2>Staff Management</h2>
+          <div class="row">
+            <input id="staffSearch" class="input" type="text" placeholder="Search staff by name or role">
+            <button id="btnStaffNew" class="btn">Add Staff</button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel__header"><h3>Staff List</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>ID</th><th>Name</th><th>Role</th><th>Shift</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="staffBody"><!-- rows --></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__header"><h3 id="staffFormTitle">Add Staff</h3></div>
+            <form id="staffForm" class="form" novalidate>
+              <label>Full Name
+                <input id="sName" class="input" type="text" placeholder="Ayesha Khan">
+              </label>
+              <label>Role
+                <select id="sRole" class="input">
+                  <option value="">Select</option>
+                  <option>Nurse</option>
+                  <option>Receptionist</option>
+                  <option>Lab Technician</option>
+                  <option>Pharmacist</option>
+                  <option>Accountant</option>
+                  <option>Cleaner</option>
+                </select>
+              </label>
+              <label>Shift
+                <select id="sShift" class="input">
+                  <option value="">Select</option>
+                  <option>Morning</option>
+                  <option>Evening</option>
+                  <option>Night</option>
+                </select>
+              </label>
+
+              <div id="staffErrors" class="errors"></div>
+
+              <div class="row">
+                <button class="btn" type="submit">Save</button>
+                <button id="btnStaffCancel" class="btn ghost" type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Registry (Local & National DB) -->
+      <div id="doctor-registry" class="section">
+        <div class="section__header">
+          <h2>Doctor Registry</h2>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel__header">
+              <h3>Search National DB (Simulated)</h3>
+              <div class="row">
+                <input id="docSearch" class="input" type="text" placeholder="Search by name or specialty">
+                <button id="btnDocSearch" class="btn">Search</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>License</th><th>Name</th><th>Specialty</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="docSearchBody"><!-- rows --></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__header"><h3>Add to Local Registry</h3></div>
+            <form id="docFormLocal" class="form" novalidate>
+              <label>License No.
+                <input id="dLicense" class="input" type="text" placeholder="BD-12345">
+              </label>
+              <label>Doctor Name
+                <input id="dName" class="input" type="text" placeholder="Dr. Priya Sen">
+              </label>
+              <label>Specialty
+                <input id="dSpec" class="input" type="text" placeholder="Cardiology">
+              </label>
+              <div class="row">
+                <button class="btn" type="submit">Add Doctor</button>
+              </div>
+              <div id="docLocalErrors" class="errors"></div>
+            </form>
+
+            <div class="panel__header"><h3>Publish to National DB (Simulated)</h3></div>
+            <form id="docFormNational" class="form" novalidate>
+              <label>License No.
+                <input id="nLicense" class="input" type="text" placeholder="BD-67890">
+              </label>
+              <label>Doctor Name
+                <input id="nName" class="input" type="text" placeholder="Dr. Hasan">
+              </label>
+              <label>Specialty
+                <input id="nSpec" class="input" type="text" placeholder="Pediatrics">
+              </label>
+              <div class="row">
+                <button class="btn" type="submit">Publish</button>
+              </div>
+              <div id="docNationalErrors" class="errors"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__header"><h3>Local Doctors</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>License</th><th>Name</th><th>Specialty</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="docLocalBody"><!-- rows --></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roles & Access (Super Admin) -->
+      <div id="roles" class="section">
+        <div class="section__header">
+          <h2>Roles & Access</h2>
+        </div>
+
+        <div class="panel">
+          <div class="panel__header"><h3>Assign Roles</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>User ID</th><th>Name</th><th>Current Role</th><th>Set Role</th></tr>
+              </thead>
+              <tbody id="rolesBody"><!-- rows --></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div id="profile" class="section">
+        <div class="section__header">
+          <h2>My Profile</h2>
+        </div>
+        <div class="panel">
+          <div class="panel__content">
+            <form id="profileForm" class="form" novalidate>
+              <label>Full Name
+                <input id="pName" class="input" type="text" placeholder="Admin User">
+              </label>
+              <label>Email
+                <input id="pEmail" class="input" type="email" placeholder="admin@hospital.org">
+              </label>
+              <label>Phone
+                <input id="pPhone" class="input" type="tel" placeholder="+8801XXXXXXXXX">
+              </label>
+              <label>Department
+                <input id="pDept" class="input" type="text" placeholder="Administration">
+              </label>
+              <div class="row">
+                <button class="btn" type="submit">Save Profile</button>
+              </div>
+              <div id="profileErrors" class="errors"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Pages -->
+      <div id="errors" class="section">
+        <div class="section__header">
+          <h2>Error Pages</h2>
+        </div>
+        <div class="grid-3">
+          <div class="error-card">
+            <h3>403</h3>
+            <p>Forbidden — You don’t have permission.</p>
+            <button class="btn ghost" data-error="403">Preview</button>
+          </div>
+          <div class="error-card">
+            <h3>404</h3>
+            <p>Page not found — This route doesn’t exist.</p>
+            <button class="btn ghost" data-error="404">Preview</button>
+          </div>
+          <div class="error-card">
+            <h3>500</h3>
+            <p>Server error — Something went wrong.</p>
+            <button class="btn ghost" data-error="500">Preview</button>
+          </div>
+        </div>
+
+        <dialog id="errorDialog">
+          <div id="errorDialogBody" class="error-dialog"></div>
+          <div class="row">
+            <button id="btnCloseDialog" class="btn">Close</button>
+          </div>
+        </dialog>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© 2025 Hospital Management System</small>
+  </footer>
+</body>
+</html>
